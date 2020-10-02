@@ -48,7 +48,7 @@ class Container(object):
     Object representing a docker test container, it is used in tests
     """
 
-    def __init__(self, image_id, name=None, remove_image=False, output_dir="output", save_output=True, volumes=None, **kwargs):
+    def __init__(self, image_id, name=None, remove_image=False, output_dir="output", save_output=True, volumes=None, entrypoint=None, **kwargs):
         self.image_id = image_id
         self.container = None
         self.name = name
@@ -61,7 +61,7 @@ class Container(object):
         self.running = False
         self.volumes = volumes
         self.environ = {}
-        self.entrypoint = None
+        self.entrypoint = entrypoint
 
         # get volumes from env (CTF_DOCKER_VOLUME=out:in:z,out2:in2:z)
         try:
@@ -146,16 +146,6 @@ class Container(object):
         d.start(self.container)
         self.running = True
         self.ip_address = self.inspect()['NetworkSettings']['IPAddress']
-
-    def startWithEntryPoint(self, entrypoint):
-        """ Starts a detached container for selected image with a custom entrypoint"""
-        self.entrypoint = entrypoint
-        self._create_container(tty=True)
-        self.logging.debug("Starting container '%s'..." % self.container.get('Id'))
-        d.start(self.container)
-        self.running = True
-        self.ip_address = self.inspect()['NetworkSettings']['IPAddress']    
-
 
     def execute(self, cmd, detach=False):
         """ executes cmd in container and return its output """
