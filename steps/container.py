@@ -32,10 +32,10 @@ import tempfile
 import time
 import multiprocessing as mp
 
-try:
-    d = docker.Client(version="1.22")
-except:
-    d = docker.APIClient(version="1.22")
+# A future version of Cekit will expose this to us, for now we hard-code
+DOCKER_API_VERSION = "1.35"
+
+d = docker.APIClient(version=DOCKER_API_VERSION)
 
 
 class ExecException(Exception):

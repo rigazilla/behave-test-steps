@@ -3,12 +3,10 @@ import docker
 
 from behave import then
 
+# A future version of Cekit will expose this to us, for now we hard-code
+DOCKER_API_VERSION = "1.35"
 
-try:
-    DOCKER_CLIENT = docker.Client(version="1.22")
-except:
-    DOCKER_CLIENT = docker.APIClient(version="1.22")
-
+DOCKER_CLIENT = docker.APIClient(version=DOCKER_API_VERSION)
 
 @then(u'the image should contain label {label}')
 @then(u'the image should contain label {label} {check} value {value}')
