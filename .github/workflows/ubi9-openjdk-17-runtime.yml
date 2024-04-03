@@ -37,4 +37,6 @@ jobs:
           STEPSDIR=$(pwd)
           git tag v1 # cekit hard-codes using ref v1
           cd test
+          # enable our own scenarios. See #66 for context.
+          for f in tests/features/*disabled; do mv "$f" "${f/.disabled/}"; done
           cekit -v test behave --steps-url file://$STEPSDIR
